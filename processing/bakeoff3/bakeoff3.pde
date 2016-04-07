@@ -3,13 +3,23 @@ import java.util.Collections;
 
 int index = 0;
 
+/* TODO Tasks
+* 1. Can use corners to do any of the steps in any order
+* Handle Big Squares
+* Handle Drag vs Resize to avoid confusion
+* Try out: Rotation idea from Rhino software
+
+*  ==== What I thought of  
+* 
+*/
+
 //your input code should modify these!!
 float screenTransX = 0;
 float screenTransY = 0;
 float screenRotation = 0;
 float screenZ = 50f;
 
-int trialCount = 20; //this will be set higher for the bakeoff
+int trialCount = 5; //this will be set higher for the bakeoff
 float border = 0; //have some padding from the sides
 int trialIndex = 0;
 int errorCount = 0;  
@@ -17,7 +27,7 @@ int startTime = 0; // time starts when the first click is captured
 int finishTime = 0; //records the time of the final click
 boolean userDone = false;
 
-final int screenPPI = 120; //what is the DPI of the screen you are using
+final int screenPPI = 294; //what is the DPI of the screen you are using
 //Many phones listed here: https://en.wikipedia.org/wiki/Comparison_of_high-definition_smartphone_displays 
 
 private class Target
@@ -37,7 +47,7 @@ float inchesToPixels(float inch)
 
 void setup() {
   //size does not let you use variables, so you have to manually compute this
-  size(400, 700); //set this, based on your sceen's PPI to be a 2x3.5" area.
+  size(588, 1029); //set this, based on your sceen's PPI to be a 2x3.5" area.
 
   rectMode(CENTER);
   textFont(createFont("Arial", inchesToPixels(.15f))); //sets the font to Arial that is .3" tall
@@ -73,7 +83,7 @@ void draw() {
   {
     text("User completed " + trialCount + " trials", width/2, inchesToPixels(.2f));
     text("User had " + errorCount + " error(s)", width/2, inchesToPixels(.2f)*2);
-    text("User took " + (finishTime-startTime)/1000f/trialCount + " sec per target", width/2, inchesToPixels(.2f)*3);
+    text("User took: \n" + (finishTime-startTime)/1000f/trialCount + " secs per target", width/2, inchesToPixels(.2f)*3);
 
     return;
   }
@@ -193,7 +203,7 @@ public boolean checkForSuccess()
 }
 
 double calculateDifferenceBetweenAngles(float a1, float a2)
-  {
+{
       a1+=360;
       a2+=360; 
       
