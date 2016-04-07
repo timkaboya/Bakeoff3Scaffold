@@ -1,0 +1,11 @@
+Designing Human Centered Software Class Assignment
+
+A simple application that displays a target square (in red) and a targetting square (in grey).
+The target square has a random X/Y position, as well as a random
+rotation and scale (think of it as a Z position).
+
+The goal to create a multi-dimensional input method for
+rotating, scaling and translating the target square onto the targeting
+square as quickly and accuratly as possible.
+
+That works just fine on phone
