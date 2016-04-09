@@ -19,7 +19,7 @@ float screenTransY = 0;
 float screenRotation = 0;
 float screenZ = 50f;
 
-int trialCount = 5; //this will be set higher for the bakeoff
+int trialCount = 20; //this will be set higher for the bakeoff
 float border = 0; //have some padding from the sides
 int trialIndex = 0;
 int errorCount = 0;  
@@ -27,7 +27,7 @@ int startTime = 0; // time starts when the first click is captured
 int finishTime = 0; //records the time of the final click
 boolean userDone = false;
 
-final int screenPPI = 294; //what is the DPI of the screen you are using
+final int screenPPI = 120; //what is the DPI of the screen you are using
 //Many phones listed here: https://en.wikipedia.org/wiki/Comparison_of_high-definition_smartphone_displays 
 
 private class Target
@@ -47,7 +47,9 @@ float inchesToPixels(float inch)
 
 void setup() {
   //size does not let you use variables, so you have to manually compute this
-  size(588, 1029); //set this, based on your sceen's PPI to be a 2x3.5" area.
+  size(400, 700); //set this, based on your sceen's PPI to be a 2x3.5" area.
+  // size(588, 1029);
+
 
   rectMode(CENTER);
   textFont(createFont("Arial", inchesToPixels(.15f))); //sets the font to Arial that is .3" tall
@@ -91,7 +93,7 @@ void draw() {
   //===========DRAW TARGET SQUARE=================
   pushMatrix();
   translate(width/2, height/2); //center the drawing coordinates to the center of the screen
-
+  rotate(radians(screenRotation));
   Target t = targets.get(trialIndex);
 
 
@@ -102,20 +104,25 @@ void draw() {
 
   fill(255, 0, 0); //set color to semi translucent
   rect(0, 0, t.z, t.z);
+  fill(255, 255, 255);
+  ellipse(0, 0, 10, 10);
 
   popMatrix();
 
   //===========DRAW TARGETTING SQUARE=================
   pushMatrix();
   translate(width/2, height/2); //center the drawing coordinates to the center of the screen
-  rotate(radians(screenRotation));
+
 
   //custom shifts:
   //translate(screenTransX,screenTransY); //center the drawing coordinates to the center of the screen
 
   fill(255, 128); //set color to semi translucent
   rect(0, 0, screenZ, screenZ);
-
+  fill(0, 0, 0);   // Accuracy circle
+  ellipse(0, 0, 10, 10);
+  
+  fill(255, 128);
   popMatrix();
 
   scaffoldControlLogic(); //you are going to want to replace this!
@@ -138,35 +145,36 @@ void scaffoldControlLogic()
   //lower left corner, decrease Z
   text("-", inchesToPixels(.2f), height-inchesToPixels(.2f));
   if (mousePressed && dist(0, height, mouseX, mouseY)<inchesToPixels(.5f))
-    screenZ-=inchesToPixels(.02f);
+    screenZ-=inchesToPixels(.01f);
 
   //lower right corner, increase Z
   text("+", width-inchesToPixels(.2f), height-inchesToPixels(.2f));
   if (mousePressed && dist(width, height, mouseX, mouseY)<inchesToPixels(.5f))
-    screenZ+=inchesToPixels(.02f);
+    screenZ+=inchesToPixels(.01f);
 
   //left middle, move left
   text("left", inchesToPixels(.2f), height/2);
   if (mousePressed && dist(0, height/2, mouseX, mouseY)<inchesToPixels(.5f))
-    screenTransX-=inchesToPixels(.02f);
+    screenTransX-=inchesToPixels(.01f);
   ;
 
   text("right", width-inchesToPixels(.2f), height/2);
   if (mousePressed && dist(width, height/2, mouseX, mouseY)<inchesToPixels(.5f))
-    screenTransX+=inchesToPixels(.02f);
+    screenTransX+=inchesToPixels(.01f);
   ;
 
   text("up", width/2, inchesToPixels(.2f));
   if (mousePressed && dist(width/2, 0, mouseX, mouseY)<inchesToPixels(.5f))
-    screenTransY-=inchesToPixels(.02f);
+    screenTransY-=inchesToPixels(.01f);
   ;
 
   text("down", width/2, height-inchesToPixels(.2f));
   if (mousePressed && dist(width/2, height, mouseX, mouseY)<inchesToPixels(.5f))
-    screenTransY+=inchesToPixels(.02f);
+    screenTransY+=inchesToPixels(.01f);
   ;
 }
 
+/* When mouse has clicked/moved and then released */
 void mouseReleased()
 {
   //check to see if user clicked middle of screen
@@ -187,6 +195,26 @@ void mouseReleased()
       finishTime = millis();
     }
   }
+}
+
+void mousePressed() {
+  println("Mouse Pressed!");
+}
+
+/* When mouse has been pressed and then moved */
+void mouseDragged() {
+  println("Mouse Dragged!");
+}
+
+
+/* When mouse has been pressed and then released */
+void mouseClicked() {
+  println("Mouse Clicked!");
+}
+
+/* Opposite of Mouse Dragged. When mouse moves w/ no click */
+void mouseMoved() {
+  println("Mouse Moved!");
 }
 
 public boolean checkForSuccess()
